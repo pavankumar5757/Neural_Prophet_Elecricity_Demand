@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Core-Type (Channel) Induction Furnace</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.mermaid) {
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      }
+    });
+  </script>
+  <meta name="description" content="Interactive overview of the Core-Type (Channel) Induction Furnace: principles, construction, pros/cons, applications, and a simple I^2R power calculator." />
+</head>
+<body>
+  <header class="container">
+    <h1>Core-Type (Channel) Induction Furnace</h1>
+    <p class="subtitle">Low-frequency channel furnace • Transformer analogy • I²R heating</p>
+  </header>
+
+  <main class="container">
+    <section id="overview">
+      <h2>Overview</h2>
+      <p>
+        A core-type induction furnace uses electromagnetic induction to melt or hold metal. It is transformer-like:
+        the laminated iron core couples a copper <em>primary winding</em> to a closed loop of molten metal that acts as the
+        <em>secondary</em>. Heat is generated directly in the metal by Joule heating (I²R).
+      </p>
+    </section>
+
+    <section id="principle">
+      <h2>Principle of Operation</h2>
+      <p>
+        Alternating current in the primary winding sets up a time-varying magnetic flux in the laminated core. This
+        links the molten-metal channel (the secondary), inducing a large current. The melt heats as power is dissipated
+        per Joule's law: P = I²R.
+      </p>
+      <div class="equation">P = I<sup>2</sup>R</div>
+    </section>
+
+    <section id="construction">
+      <h2>Construction</h2>
+      <ul>
+        <li><strong>Transformer core</strong>: Laminated silicon steel to reduce hysteresis and eddy losses.</li>
+        <li><strong>Primary winding</strong>: Insulated copper coil, often water/air cooled, fed by 50–60 Hz.</li>
+        <li><strong>Crucible and channel (secondary)</strong>: Refractory-lined bath with a narrow loop through the core.</li>
+      </ul>
+    </section>
+
+    <section id="operations">
+      <h2>Working & Operation</h2>
+      <ol>
+        <li><strong>Molten heel</strong>: Requires a molten heel to complete the secondary loop at startup.</li>
+        <li><strong>Electromagnetic stirring</strong>: Large currents and fields drive gentle, continuous stirring.</li>
+        <li><strong>Pinch effect</strong>: Excess current density can constrict flow; design limits power density.</li>
+        <li><strong>Continuous duty</strong>: Best as a holding/continuous furnace; cold starts are costly.</li>
+      </ol>
+    </section>
+
+    <section id="diagram">
+      <h2>Simplified Diagram</h2>
+      <div class="mermaid">
+        graph LR
+          A[AC Supply] -- Primary Current --> P((Primary Coil))
+          P --> C{{Laminated Core}}
+          C --> CH[[Molten Metal Channel]]
+          CH --> B[(Main Bath / Crucible)]
+          CH -. Induced Current .-> CH
+          classDef primary fill:#eaf5ff,stroke:#2980b9,color:#1f3a57;
+          classDef metal fill:#fff3e6,stroke:#d35400,color:#6e2c00;
+          class P primary;
+          class CH,B metal;
+      </div>
+    </section>
+
+    <section id="advantages">
+      <h2>Advantages</h2>
+      <ul>
+        <li>High electrical efficiency; excellent magnetic coupling via iron core.</li>
+        <li>High supply-side power factor (typically 0.8–0.9).</li>
+        <li>Precise temperature control; automatic electromagnetic stirring.</li>
+        <li>Low fume and oxidation; favorable for holding non-ferrous alloys.</li>
+      </ul>
+    </section>
+
+    <section id="disadvantages">
+      <h2>Disadvantages</h2>
+      <ul>
+        <li>Needs molten heel; less flexible for intermittent or multi-alloy work.</li>
+        <li>Channel can clog with slag/inclusions; maintenance required.</li>
+        <li>Pinch-effect limits maximum power density.</li>
+        <li>Higher initial cost due to iron core and construction.</li>
+      </ul>
+    </section>
+
+    <section id="applications">
+      <h2>Applications</h2>
+      <ul>
+        <li>Melting and holding non-ferrous metals (brass, bronze, copper, aluminum alloys, zinc).</li>
+        <li>Holding furnaces in foundries and die-casting lines.</li>
+        <li>Duplexing with other melters (e.g., cupola to channel furnace for holding/trim).</li>
+      </ul>
+    </section>
+
+    <section id="calculator" class="card">
+      <h2>I²R Power Calculator</h2>
+      <p>Estimate heating power from induced current and electrical resistance.</p>
+      <form id="calc-form">
+        <div class="grid">
+          <label>
+            Induced current I (kA)
+            <input type="number" id="input-current" min="0" step="0.1" placeholder="e.g., 10" />
+          </label>
+          <label>
+            Channel resistance R (µΩ)
+            <input type="number" id="input-resistance" min="0" step="0.1" placeholder="e.g., 50" />
+          </label>
+          <label>
+            Result power P (kW)
+            <input type="text" id="output-power" readonly />
+          </label>
+        </div>
+        <button type="submit">Compute</button>
+        <small>Note: P = I²R with I in kA, R in micro-ohms, yields P in kW.</small>
+      </form>
+    </section>
+
+    <section id="comparison">
+      <h2>Core-Type vs Coreless Induction Furnace</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Core-Type (Channel)</th>
+              <th>Coreless</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Core</td>
+              <td>Has laminated iron core</td>
+              <td>No iron core (air-core coupling)</td>
+            </tr>
+            <tr>
+              <td>Operating frequency</td>
+              <td>Low (50–60 Hz)</td>
+              <td>Medium/High (≈250 Hz–several kHz)</td>
+            </tr>
+            <tr>
+              <td>Power factor</td>
+              <td>High (≈0.8–0.9)</td>
+              <td>Raw low; corrected to near unity via capacitors/inverters</td>
+            </tr>
+            <tr>
+              <td>Efficiency</td>
+              <td>Very high (especially for holding)</td>
+              <td>High; depends on size, lining, power density</td>
+            </tr>
+            <tr>
+              <td>Starting</td>
+              <td>Needs molten heel</td>
+              <td>Can start from cold solid charge</td>
+            </tr>
+            <tr>
+              <td>Stirring</td>
+              <td>Gentle, continuous</td>
+              <td>Vigorous; frequency/power dependent</td>
+            </tr>
+            <tr>
+              <td>Flexibility</td>
+              <td>Best for continuous, single-alloy holding</td>
+              <td>Highly flexible across alloys and duty cycles</td>
+            </tr>
+            <tr>
+              <td>Applications</td>
+              <td>Holding/melting non-ferrous; duplexing</td>
+              <td>Primary melting of steel, iron, special alloys</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">
+    <p>© 2025 Core-Type Induction Furnace Demo</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
