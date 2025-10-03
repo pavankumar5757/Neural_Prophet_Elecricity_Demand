@@ -13,16 +13,26 @@ def _metrics(y_true: np.ndarray, y_pred: np.ndarray) -> Dict[str, float]:
 
 
 def rolling_origin_cv(series_id: str, horizon: int = 30, step: int = 30) -> Dict[str, float]:
-	 df = merge_all(DEFAULT_DEMAND_CSV, "2016-01-01", None)
-	 df_local = df[df["ID"] == series_id][["ds", "y"]].dropna().reset_index(drop=True)
+    df = merge_all(DEFAULT_DEMAND_CSV, "2016-01-01", None)
+    cols = [
+        "ds",
+        "y",
+        "is_pre_holiday",
+        "is_post_holiday",
+        "is_lockdown",
+    ]
+    df_local = df[df["ID"] == series_id][cols].dropna(subset=["y"]).fillna(0).reset_index(drop=True)
 	 splits = []
 	 start = 365  # initial training window
 	 while start + horizon <= len(df_local):
 		 train = df_local.iloc[:start]
 		 valid = df_local.iloc[start:start + horizon]
-		 m = NeuralProphet(yearly_seasonality=True, weekly_seasonality=True, n_changepoints=10)
-		 m.fit(train, freq="D", progress_bar=False)
-		 fcst = m.predict(m.make_future_dataframe(train, periods=horizon))
+        m = NeuralProphet(yearly_seasonality=True, weekly_seasonality=True, n_changepoints=10)
+        m.add_country_holidays(country_name="IN")
+        for reg in ["is_pre_holiday", "is_post_holiday", "is_lockdown"]:
+            m.add_future_regressor(reg)
+        m.fit(train, freq="D", progress_bar=False)
+        fcst = m.predict(m.make_future_dataframe(train, periods=horizon))
 		 yhat = fcst.tail(horizon)["yhat1"].to_numpy()
 		 splits.append(_metrics(valid["y"].to_numpy(), yhat))
 		 start += step
