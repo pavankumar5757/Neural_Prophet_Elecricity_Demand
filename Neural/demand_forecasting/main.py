@@ -75,8 +75,7 @@ def run(phase: str, file_path: str, start: str, end: str):
 		 load_and_clean_demand_data(Path(file_path))
 		 build_holiday_events_df()
 		 build_lockdown_events_df()
-		 fetch_regional_weather(start, end, None)
-		 engineer_weather_features()
+        # Weather fetching and feature engineering are performed inside merge_all
 		 merge_all(Path(file_path), start, end)
 		 train_baseline_model("NR_Demand")
 		 click.echo("Completed baseline pipeline.")
